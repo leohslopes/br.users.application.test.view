@@ -1,0 +1,58 @@
+<app-alert></app-alert>
+
+<!-- <nav class="app-menu">
+  <ul>
+    <li *ngIf="!isLoged"><a routerLink="/auth/login" routerLinkActive="active">Login</a></li>
+    <li *ngIf="!isLoged"><a routerLink="/auth/register" routerLinkActive="active">Registrar</a></li>
+    <li><a routerLink="/account/index" routerLinkActive="active">Conta</a></li>
+    <li><a routerLink="/account/protect" routerLinkActive="active">Protegido</a></li>
+    <li *ngIf="isLoged"><a (click)="logout()">Sair</a></li>
+  </ul>
+</nav> -->
+<router-outlet></router-outlet>
+<!-- <div>
+  <nav>
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Usuários</span>
+    </div>
+  </nav>
+  <br>
+  <div >
+    <button type="button" class="btn btn-outline-primary" (click)="OpenCreateUserModal()">
+      Adicionar Usuários
+    </button>
+  </div>
+</div>
+<br>
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Código</th>
+      <th scope="col">Nome</th>
+      <th scope="col">E-mail</th>
+      <th scope="col">Idade</th>
+      <th scope="col">Sexo</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let u of users" class="table-group-divider">
+    <tr>
+      <td>
+        {{u.userID}}
+      </td>
+      <td>
+        {{u.userName}}
+      </td>
+      <td>
+        {{u.userEmail}}
+      </td>
+      <td>
+        {{u.userAge}}
+      </td>
+      <td>
+        {{u.userGender}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-create-user (onSubmit)="OnSubmitCreateUser($event)"></app-create-user> -->
