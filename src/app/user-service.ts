@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IApiResponse, IUpdateUserDataRequestModel, IUsers } from './models/users';
+import { IApiResponse, IDeleteUserDataRequestModel, IUpdateUserDataRequestModel, IUsers } from './models/users';
 import { map } from 'rxjs';
 
 @Injectable({
@@ -26,5 +26,9 @@ export class UserService {
 
   updateUser(command: IUpdateUserDataRequestModel) {
     return this.httpclient.put<IApiResponse<any>>(`${this.url}/User/${command.userID}`, command);
+  }
+
+  deleteUser(command: IDeleteUserDataRequestModel) {
+    return this.httpclient.delete<IApiResponse<any>>(`${this.url}/User/${command.userID}`);
   }
 }

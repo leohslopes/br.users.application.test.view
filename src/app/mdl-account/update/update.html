@@ -1,5 +1,5 @@
 <dialog id="update_user_modal">
-<form [formGroup]="userFormGroup" (ngSubmit)="updateUser()">
+  <form [formGroup]="userFormGroup" (ngSubmit)="updateUser()">
     <h2 class="font-weight-bold" *ngIf="users">{{users.userID}}</h2>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Nome:</b></label>
@@ -21,9 +21,10 @@
           até 150 caracteres.</small>
       </div>
     </div>
-     <div class="mb-3">
+    <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Senha:</b></label>
-      <input type="password" class="form-control" formControlName="userPassword" aria-describedby="emailHelp" maxlength="150">
+      <input type="password" class="form-control" formControlName="userPassword" aria-describedby="emailHelp"
+        maxlength="150">
       <div *ngIf="userFormGroup.get('userPassword')?.invalid && userFormGroup.get('userPassword')?.touched">
         <small *ngIf="userFormGroup.get('userPassword')?.errors?.['required']">Senha é
           obrigatória.</small>
@@ -55,6 +56,6 @@
     </div>
   </form>
   <br>
-    <button type="button" class="btn btn-outline-primary" (click)="updateUser()">Salvar</button>
-    <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Cancelar</button>
+  <button type="button" class="btn btn-outline-primary" (click)="updateUser()">Salvar</button>
+  <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Cancelar</button>
 </dialog>

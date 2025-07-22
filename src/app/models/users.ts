@@ -36,3 +36,7 @@ export interface IUpdateUserDataRequestModel {
   userGender: string,
   userPassword: string
 }
+
+export interface IDeleteUserDataRequestModel{
+  userID: number
+}

@@ -38,12 +38,12 @@
         {{ChangeTextGender(u.userGender)}}
       </td>
       <td>
-        <button type="button" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top"
-          title="Editar" (click)="openViewUserModal(selectUser, $event)">
+        <button type="button" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" title="Editar"
+          (click)="openViewUserModal(selectUser, $event)">
           <i class="bi bi-pencil"></i>
         </button>
-         <button type="button" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top"
-          title="Excluir">
+        <button type="button" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" title="Excluir"
+          (click)="openDeleteUserModal(selectUser, $event)">
           <i class="bi bi-x-square"></i>
         </button>
       </td>
@@ -51,3 +51,4 @@
   </tbody>
 </table>
 <app-update (onSubmit)="onSubmitUpdateUser($event)" [users]="selectUser"></app-update>
+<app-delete (onSubmit)="onSubmiDeleteUser($event)" [users]="selectUser"></app-delete>

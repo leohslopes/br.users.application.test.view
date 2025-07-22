@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { IUpdateUserDataRequestModel, IUsers } from '../../models/users';
+import { IDeleteUserDataRequestModel, IUsers } from '../../models/users';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../mdl-auth/auth-service';
 import { AlertService } from '../../alert/alert-service';
@@ -7,19 +7,16 @@ import { UserAuthService } from '../../shared/user-auth-service';
 import { closeModalById } from '../../util/modal.util';
 import { CommonModule } from '@angular/common';
 
-const _modalId = 'update_user_modal';
+const _modalId = 'delete_user_modal';
 @Component({
-  selector: 'app-update',
+  selector: 'app-delete',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './update.html',
-  styleUrl: './update.css'
+  templateUrl: './delete.html',
+  styleUrl: './delete.css'
 })
-
-export class Update implements OnChanges,OnInit {
-
-
+export class Delete implements OnChanges, OnInit {
   @Input() users!: IUsers;
-  @Output() onSubmit: EventEmitter<IUpdateUserDataRequestModel> = new EventEmitter();
+  @Output() onSubmit: EventEmitter<IDeleteUserDataRequestModel> = new EventEmitter();
   userFormGroup!: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
@@ -28,11 +25,7 @@ export class Update implements OnChanges,OnInit {
     private userAuthService: UserAuthService) {
     this.userFormGroup = this.formBuilder.group({
       userID: ['', [Validators.required]],
-      userName: ['', [Validators.required, Validators.maxLength(50)]],
-      userEmail: ['', [Validators.required, Validators.maxLength(150)]],
-      userAge: [null, [Validators.required, Validators.min(1)]],
-      userGender: ['', [Validators.required]],
-      userPassword: ['', [Validators.required, Validators.maxLength(150)]]
+      userName: ['', [Validators.required]]
     });
   }
   ngOnInit(): void {
@@ -43,34 +36,24 @@ export class Update implements OnChanges,OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.users) return;
     this.#loadUserData();
-    //this.userFormGroup.disable();
   }
 
   #loadUserData() {
     this.userFormGroup.patchValue({
       userID: this.users.userID,
-      userName: this.users.userName,
-      userEmail: this.users.userEmail,
-      userAge: this.users.userAge,
-      userGender: this.users.userGender,
-      userPassword: this.users.userPassword
+      userName: this.users.userName
     });
   }
 
-  updateUser() {
+  deleteUser() {
     this.userFormGroup.markAllAsTouched();
 
     if (!this.userFormGroup.valid) return;
 
     const formData = this.userFormGroup.value;
     const command = {
-      userID: parseInt(formData.userID),
-      userName: formData.userName,
-      userEmail: formData.userEmail,
-      userAge: parseInt(formData.userAge),
-      userGender: formData.userGender,
-      userPassword: formData.userPassword
-    } as IUpdateUserDataRequestModel;
+      userID: parseInt(formData.userID)
+    } as IDeleteUserDataRequestModel;
 
     this.onSubmit.emit(command);
     this.closeModal();
@@ -80,5 +63,4 @@ export class Update implements OnChanges,OnInit {
     this.userFormGroup.reset();
     closeModalById(_modalId);
   }
-
 }

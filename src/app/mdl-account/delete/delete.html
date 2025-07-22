@@ -1,0 +1,9 @@
+<dialog id="delete_user_modal">
+    <div class="mb-3">
+        <p class="fw-normal" *ngIf="users">Tem certeza que deseja exclir o usuário {{users.userName}}?(Cód.:
+            {{users.userID}})</p>
+    </div>
+    <br>
+    <button type="button" class="btn btn-outline-success" (click)="deleteUser()">Sim</button>
+    <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Não</button>
+</dialog>
