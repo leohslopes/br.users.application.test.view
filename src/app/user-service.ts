@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IApiResponse, IItemUserDataRequestModel, IUsers } from './models/users';
+import { IApiResponse, IUpdateUserDataRequestModel, IUsers } from './models/users';
 import { map } from 'rxjs';
 
 @Injectable({
@@ -22,5 +22,9 @@ export class UserService {
           return response.data;
         })
         );
+  }
+
+  updateUser(command: IUpdateUserDataRequestModel) {
+    return this.httpclient.put<IApiResponse<any>>(`${this.url}/User/${command.userID}`, command);
   }
 }

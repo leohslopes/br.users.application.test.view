@@ -1,0 +1,60 @@
+<dialog id="update_user_modal">
+<form [formGroup]="userFormGroup" (ngSubmit)="updateUser()">
+    <h2 class="font-weight-bold" *ngIf="users">{{users.userID}}</h2>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label"><b>Nome:</b></label>
+      <input type="text" class="form-control" formControlName="userName" aria-describedby="emailHelp" maxlength="50">
+      <div *ngIf="userFormGroup.get('userName')?.invalid && userFormGroup.get('userName')?.touched">
+        <small *ngIf="userFormGroup.get('userName')?.errors?.['required']">Nome é
+          obrigatório.</small>
+        <small *ngIf="userFormGroup.get('userName')?.errors?.['maxnlength']">Nome pode ter
+          até 50 caracteres.</small>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label"><b>E-mail:</b></label>
+      <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp" maxlength="150">
+      <div *ngIf="userFormGroup.get('userEmail')?.invalid && userFormGroup.get('userEmail')?.touched">
+        <small *ngIf="userFormGroup.get('userEmail')?.errors?.['required']">E-mail é
+          obrigatório.</small>
+        <small *ngIf="userFormGroup.get('userEmail')?.errors?.['maxnlength']">Nome pode ter
+          até 150 caracteres.</small>
+      </div>
+    </div>
+     <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label"><b>Senha:</b></label>
+      <input type="password" class="form-control" formControlName="userPassword" aria-describedby="emailHelp" maxlength="150">
+      <div *ngIf="userFormGroup.get('userPassword')?.invalid && userFormGroup.get('userPassword')?.touched">
+        <small *ngIf="userFormGroup.get('userPassword')?.errors?.['required']">Senha é
+          obrigatória.</small>
+        <small *ngIf="userFormGroup.get('userPassword')?.errors?.['maxnlength']">Nome pode ter
+          até 150 caracteres.</small>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label"><b>Idade:</b></label>
+      <input type="number" class="form-control" formControlName="userAge" aria-describedby="emailHelp" step="1" min="1">
+      <div *ngIf="userFormGroup.get('userAge')?.invalid && userFormGroup.get('userAge')?.touched">
+        <small *ngIf="userFormGroup.get('userAge')?.errors?.['required']">Idade é
+          obrigatória.</small>
+        <small *ngIf="userFormGroup.get('userAge')?.errors?.['min']">A idade deve ser maior que
+          1.</small>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label"><b>Sexo:</b></label>
+      <select class="form-control" aria-describedby="emailHelp" formControlName="userGender">
+        <option selected>Selecione...</option>
+        <option value="F">Feminino</option>
+        <option value="M">Masculino</option>
+      </select>
+      <div *ngIf="userFormGroup.get('userGender')?.invalid && userFormGroup.get('userGender')?.touched"
+        class="text-red-500 text-sm mt-0.5">
+        <small *ngIf="userFormGroup.get('userGender')?.errors?.['required']">Sexo é obrigatório.</small>
+      </div>
+    </div>
+  </form>
+  <br>
+    <button type="button" class="btn btn-outline-primary" (click)="updateUser()">Salvar</button>
+    <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Cancelar</button>
+</dialog>

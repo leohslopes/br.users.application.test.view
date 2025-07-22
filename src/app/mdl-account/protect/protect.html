@@ -17,9 +17,10 @@
       <th scope="col">E-mail</th>
       <th scope="col">Idade</th>
       <th scope="col">Sexo</th>
+      <th scope="col">-</th>
     </tr>
   </thead>
-  <tbody *ngFor="let u of users" class="table-group-divider">
+  <tbody *ngFor="let u of users" class="table-group-divider" (click)="SelectedItem(u)">
     <tr>
       <td>
         {{u.userID}}
@@ -36,6 +37,17 @@
       <td>
         {{ChangeTextGender(u.userGender)}}
       </td>
+      <td>
+        <button type="button" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top"
+          title="Editar" (click)="openViewUserModal(selectUser, $event)">
+          <i class="bi bi-pencil"></i>
+        </button>
+         <button type="button" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top"
+          title="Excluir">
+          <i class="bi bi-x-square"></i>
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>
+<app-update (onSubmit)="onSubmitUpdateUser($event)" [users]="selectUser"></app-update>

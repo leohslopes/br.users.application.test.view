@@ -5,7 +5,8 @@ export interface IUsers {
   userName: string,
   userEmail: string,
   userAge: number,
-  userGender: string
+  userGender: string,
+  userPassword: string
 }
 
 export interface IApiResponse<T> {
@@ -24,5 +25,14 @@ export interface IItemUserDataRequestModel {
 
 export interface ILoginModel {
   userEmail: string,
+  userPassword: string
+}
+
+export interface IUpdateUserDataRequestModel {
+  userID: number,
+  userName: string,
+  userEmail: string,
+  userAge: number,
+  userGender: string,
   userPassword: string
 }
