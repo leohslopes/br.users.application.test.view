@@ -60,8 +60,8 @@ export class Protect implements OnInit {
     openModalById('update_user_modal');
   }
 
-  onSubmitUpdateUser(command: IUpdateUserDataRequestModel) {
-    this.userService.updateUser(command).subscribe({
+  onSubmitUpdateUser(command: any) {
+    this.userService.updateUser(command.userId, command.data).subscribe({
       next: (value: IApiResponse<any>) => {
         if (value.success) {
           this.alertService.success('Usuário atualizado com sucesso.');
@@ -134,6 +134,14 @@ export class Protect implements OnInit {
         this.alertService.error('Falha ao excluir usuário, tente novamente.');
       }
     })
+  }
+
+  loadImage(item: string) {
+    if(item == null || item == undefined || item == '') {
+      return "assets/SemFoto.jpg";
+    } else {
+      return `data:image/jpeg;base64,${item}`;
+    }
   }
 
 }

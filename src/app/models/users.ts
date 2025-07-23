@@ -6,7 +6,8 @@ export interface IUsers {
   userEmail: string,
   userAge: number,
   userGender: string,
-  userPassword: string
+  userPassword: string,
+  userPicture: any
 }
 
 export interface IApiResponse<T> {
@@ -34,7 +35,8 @@ export interface IUpdateUserDataRequestModel {
   userEmail: string,
   userAge: number,
   userGender: string,
-  userPassword: string
+  userPassword: string,
+  userPicture: string
 }
 
 export interface IDeleteUserDataRequestModel{

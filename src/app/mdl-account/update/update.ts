@@ -15,12 +15,14 @@ const _modalId = 'update_user_modal';
   styleUrl: './update.css'
 })
 
-export class Update implements OnChanges,OnInit {
+export class Update implements OnChanges, OnInit {
 
 
   @Input() users!: IUsers;
-  @Output() onSubmit: EventEmitter<IUpdateUserDataRequestModel> = new EventEmitter();
+  @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   userFormGroup!: FormGroup;
+  previewUrl: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
 
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -28,13 +30,15 @@ export class Update implements OnChanges,OnInit {
     private userAuthService: UserAuthService) {
     this.userFormGroup = this.formBuilder.group({
       userID: ['', [Validators.required]],
-      userName: ['', [Validators.required, Validators.maxLength(50)]],
-      userEmail: ['', [Validators.required, Validators.maxLength(150)]],
+      userName: ['', [Validators.required, Validators.maxLength(80)]],
+      userEmail: ['', [Validators.required, Validators.maxLength(50)]],
       userAge: [null, [Validators.required, Validators.min(1)]],
       userGender: ['', [Validators.required]],
-      userPassword: ['', [Validators.required, Validators.maxLength(150)]]
+      userPassword: ['', [Validators.required, Validators.maxLength(200)]],
+      userPicture: [null]
     });
   }
+
   ngOnInit(): void {
     if (!this.users) return;
     this.#loadUserData();
@@ -53,32 +57,53 @@ export class Update implements OnChanges,OnInit {
       userEmail: this.users.userEmail,
       userAge: this.users.userAge,
       userGender: this.users.userGender,
-      userPassword: this.users.userPassword
+      userPassword: this.users.userPassword,
+      userPicture: this.users.userPicture
     });
   }
 
   updateUser() {
     this.userFormGroup.markAllAsTouched();
+    if (this.userFormGroup.invalid) return;
 
-    if (!this.userFormGroup.valid) return;
+    const fv = this.userFormGroup.value;
+    const formData = new FormData();
 
-    const formData = this.userFormGroup.value;
-    const command = {
-      userID: parseInt(formData.userID),
-      userName: formData.userName,
-      userEmail: formData.userEmail,
-      userAge: parseInt(formData.userAge),
-      userGender: formData.userGender,
-      userPassword: formData.userPassword
-    } as IUpdateUserDataRequestModel;
+    // campos de texto / número
+    formData.append('userID', fv.userID.toString());
+    formData.append('userName', fv.userName);
+    formData.append('userEmail', fv.userEmail);
+    formData.append('userAge', fv.userAge.toString());
+    formData.append('userGender', fv.userGender);
+    formData.append('userPassword', fv.userPassword);
 
-    this.onSubmit.emit(command);
+    // campo de imagem (só anexa se for realmente um File)
+    const pic = fv.userPicture;
+    if (pic instanceof File) {
+      formData.append('userPicture', pic, pic.name);
+    } else {
+      console.warn('userPicture não é um File válido:', pic);
+    }
+
+    // agora emite o FormData, não mais o JSON puro
+    this.onSubmit.emit({userId: fv.userID, data: formData});
     this.closeModal();
+
   }
 
   closeModal() {
     this.userFormGroup.reset();
     closeModalById(_modalId);
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+    // aqui sim você armazena o File no FormControl
+    this.userFormGroup.patchValue({ userPicture: file });
+    this.userFormGroup.get('userPicture')!.updateValueAndValidity();
   }
 
 }

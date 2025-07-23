@@ -2,34 +2,42 @@
   <form [formGroup]="userFormGroup" (ngSubmit)="updateUser()">
     <h2 class="font-weight-bold" *ngIf="users">{{users.userID}}</h2>
     <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label"><b>Foto:</b></label>
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+      <div *ngIf="userFormGroup.get('userPicture')?.invalid && userFormGroup.get('userPicture')?.touched">
+        <small *ngIf="userFormGroup.get('userPicture')?.errors?.['required']">Foto é
+          obrigatória.</small>
+      </div>
+    </div>
+    <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Nome:</b></label>
-      <input type="text" class="form-control" formControlName="userName" aria-describedby="emailHelp" maxlength="50">
+      <input type="text" class="form-control" formControlName="userName" aria-describedby="emailHelp" maxlength="80">
       <div *ngIf="userFormGroup.get('userName')?.invalid && userFormGroup.get('userName')?.touched">
         <small *ngIf="userFormGroup.get('userName')?.errors?.['required']">Nome é
           obrigatório.</small>
-        <small *ngIf="userFormGroup.get('userName')?.errors?.['maxnlength']">Nome pode ter
-          até 50 caracteres.</small>
+        <small *ngIf="userFormGroup.get('userName')?.errors?.['maxlength']">Nome pode ter
+          até 80 caracteres.</small>
       </div>
     </div>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>E-mail:</b></label>
-      <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp" maxlength="150">
+      <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp" maxlength="50">
       <div *ngIf="userFormGroup.get('userEmail')?.invalid && userFormGroup.get('userEmail')?.touched">
         <small *ngIf="userFormGroup.get('userEmail')?.errors?.['required']">E-mail é
           obrigatório.</small>
-        <small *ngIf="userFormGroup.get('userEmail')?.errors?.['maxnlength']">Nome pode ter
-          até 150 caracteres.</small>
+        <small *ngIf="userFormGroup.get('userEmail')?.errors?.['maxlength']">Nome pode ter
+          até 50 caracteres.</small>
       </div>
     </div>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Senha:</b></label>
       <input type="password" class="form-control" formControlName="userPassword" aria-describedby="emailHelp"
-        maxlength="150">
+        maxlength="200">
       <div *ngIf="userFormGroup.get('userPassword')?.invalid && userFormGroup.get('userPassword')?.touched">
         <small *ngIf="userFormGroup.get('userPassword')?.errors?.['required']">Senha é
           obrigatória.</small>
-        <small *ngIf="userFormGroup.get('userPassword')?.errors?.['maxnlength']">Nome pode ter
-          até 150 caracteres.</small>
+        <small *ngIf="userFormGroup.get('userPassword')?.errors?.['maxlength']">Nome pode ter
+          até 200 caracteres.</small>
       </div>
     </div>
     <div class="mb-3">
@@ -45,7 +53,7 @@
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Sexo:</b></label>
       <select class="form-control" aria-describedby="emailHelp" formControlName="userGender">
-        <option selected>Selecione...</option>
+        <option value=" " selected>Selecione...</option>
         <option value="F">Feminino</option>
         <option value="M">Masculino</option>
       </select>

@@ -27,6 +27,8 @@
       </td>
       <td>
         {{u.userName}}
+        <br>
+        <img [src]="loadImage(u.userPicture)" alt="Icon Photo" class="card-img-top" style="width: 100px; height: 100px;">
       </td>
       <td>
         {{u.userEmail}}
@@ -42,6 +44,8 @@
           (click)="openViewUserModal(selectUser, $event)">
           <i class="bi bi-pencil"></i>
         </button>
+        <br>
+        <br>
         <button type="button" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" title="Excluir"
           (click)="openDeleteUserModal(selectUser, $event)">
           <i class="bi bi-x-square"></i>
