@@ -1,6 +1,6 @@
-# BrUsersApplicationTestView
+# Sobre
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.0.
+O BR.USERS.APPLICATION.TEST é um projeto de cadastro de usuários e requisições de login pelo token através do JWT com o intuíto de colocar as boas práticas de programação.
 
 #### Rodar Frontend
 1 - Subir BackEnd: https://github.com/leohslopes/br.users.application.test
