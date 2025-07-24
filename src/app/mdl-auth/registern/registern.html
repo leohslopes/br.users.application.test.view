@@ -1,59 +1,87 @@
-<dialog id="create_user_modal">
-<form [formGroup]="userFormGroup" (ngSubmit)="insertUser()">
+<dialog id="create_user_modal" class="modal-medio">
+  <form [formGroup]="userFormGroup" (ngSubmit)="insertUser()">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label"><b>CPF:</b></label>
+      <input type="text" class="form-control" formControlName="userOfficialNumber" aria-describedby="emailHelp"
+        [value]="idRegister" (input)="formatRegister($event)" maxlength="14">
+      <div *ngIf="userFormGroup.get('userOfficialNumber')?.invalid && userFormGroup.get('userOfficialNumber')?.touched">
+        <small class="text-danger small" *ngIf="userFormGroup.get('userOfficialNumber')?.errors?.['required']">CPF é
+          obrigatório.</small> <br>
+        <small class="text-danger small"
+          *ngIf="userFormGroup.get('userOfficialNumber')?.errors?.['maxlength'] || userFormGroup.get('userOfficialNumber')?.errors?.['cpfInvalido']">CPF
+          inválido.</small>
+      </div>
+    </div>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Nome:</b></label>
-      <input type="text" class="form-control" formControlName="userName" aria-describedby="emailHelp" maxlength="50">
+      <input type="text" class="form-control" formControlName="userName" aria-describedby="emailHelp" maxlength="80">
       <div *ngIf="userFormGroup.get('userName')?.invalid && userFormGroup.get('userName')?.touched">
-        <small *ngIf="userFormGroup.get('userName')?.errors?.['required']">Nome é
+        <small class="text-danger small" *ngIf="userFormGroup.get('userName')?.errors?.['required']">Nome é
           obrigatório.</small>
-        <small *ngIf="userFormGroup.get('userName')?.errors?.['maxlength']">Nome pode ter
+        <small class="text-danger small" *ngIf="userFormGroup.get('userName')?.errors?.['maxlength']">Nome pode ter
           até 50 caracteres.</small>
       </div>
     </div>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>E-mail:</b></label>
-      <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp" maxlength="150">
+      <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp" maxlength="50">
       <div *ngIf="userFormGroup.get('userEmail')?.invalid && userFormGroup.get('userEmail')?.touched">
-        <small *ngIf="userFormGroup.get('userEmail')?.errors?.['required']">E-mail é
+        <small class="text-danger small" *ngIf="userFormGroup.get('userEmail')?.errors?.['required']">E-mail é
           obrigatório.</small>
-        <small *ngIf="userFormGroup.get('userEmail')?.errors?.['maxlength']">Nome pode ter
-          até 150 caracteres.</small>
+        <small class="text-danger small" *ngIf="userFormGroup.get('userEmail')?.errors?.['maxlength']">E-mail pode ter
+          até 50 caracteres.</small>
       </div>
     </div>
-     <div class="mb-3">
+    <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Senha:</b></label>
-      <input type="password" class="form-control" formControlName="userPassword" aria-describedby="emailHelp" maxlength="150">
+      <input [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="userPassword"
+        aria-describedby="emailHelp" maxlength="8">
+      <div class="form-check mt-1">
+        <input type="checkbox" class="form-check-input" id="showPasswordCheck" (click)="checkedPassword($event)" />
+        <label class="form-check-label" for="showPasswordCheck">Mostrar senha</label>
+      </div>
       <div *ngIf="userFormGroup.get('userPassword')?.invalid && userFormGroup.get('userPassword')?.touched">
-        <small *ngIf="userFormGroup.get('userPassword')?.errors?.['required']">Senha é
+        <small class="text-danger small" *ngIf="userFormGroup.get('userPassword')?.errors?.['required']">Senha é
           obrigatória.</small>
-        <small *ngIf="userFormGroup.get('userPassword')?.errors?.['maxlength']">Nome pode ter
-          até 150 caracteres.</small>
+        <small class="text-danger small" *ngIf="userFormGroup.get('userPassword')?.errors?.['maxlength']">Senha pode ter
+          até 8 caracteres.</small>
+        <small class="text-danger small" *ngIf="userFormGroup.get('userPassword')?.errors?.['passwordPolicy']">
+          Senha deverá conter:
+          <ul>
+            <li>Uma letra maiúscula</li>
+            <li>Uma letra minúscula</li>
+            <li>Um número</li>
+            <li>Um caractere especial</li>
+          </ul>
+        </small>
       </div>
     </div>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Idade:</b></label>
       <input type="number" class="form-control" formControlName="userAge" aria-describedby="emailHelp" step="1" min="1">
       <div *ngIf="userFormGroup.get('userAge')?.invalid && userFormGroup.get('userAge')?.touched">
-        <small *ngIf="userFormGroup.get('userAge')?.errors?.['required']">Idade é
+        <small class="text-danger small" *ngIf="userFormGroup.get('userAge')?.errors?.['required']">Idade é
           obrigatória.</small>
-        <small *ngIf="userFormGroup.get('userAge')?.errors?.['min']">A idade deve ser maior que
+        <small class="text-danger small" *ngIf="userFormGroup.get('userAge')?.errors?.['min']">A idade deve ser maior
+          que
           1.</small>
       </div>
     </div>
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label"><b>Sexo:</b></label>
       <select class="form-control" aria-describedby="emailHelp" formControlName="userGender">
-        <option value=" " selected>Selecione...</option>
+        <option value="" disabled selected>Selecione...</option>
         <option value="F">Feminino</option>
         <option value="M">Masculino</option>
       </select>
       <div *ngIf="userFormGroup.get('userGender')?.invalid && userFormGroup.get('userGender')?.touched"
         class="text-red-500 text-sm mt-0.5">
-        <small *ngIf="userFormGroup.get('userGender')?.errors?.['required']">Sexo é obrigatório.</small>
+        <small class="text-danger small" *ngIf="userFormGroup.get('userGender')?.errors?.['required']">Sexo é
+          obrigatório.</small>
       </div>
     </div>
   </form>
   <br>
-    <button type="button" class="btn btn-outline-primary" (click)="insertUser()">Salvar</button>
-    <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Cancelar</button>
+  <button type="button" class="btn btn-outline-primary" (click)="insertUser()">Salvar</button>
+  <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Cancelar</button>
 </dialog>

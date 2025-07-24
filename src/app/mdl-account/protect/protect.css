@@ -1,0 +1,23 @@
+.selected-item {
+  background-color: #0000FF !important;
+  transition: background-color 0.3s ease;
+}
+
+.img-thumbnail {
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+table.table-hover tbody tr:hover {
+  background-color: #0000FF !important;
+}
+
+.table td, .table th {
+  padding: 0.3rem 0.5rem; /* Ajuste o padding vertical e horizontal */
+  vertical-align: middle; /* Centraliza o conteúdo verticalmente */
+}
+
+.table img.img-thumbnail {
+  width: 80px;  /* Reduz a largura da imagem, se quiser */
+  height: 80px; /* Reduz a altura da imagem */
+}

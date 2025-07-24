@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../user-service';
-import { IApiResponse, IDeleteUserDataRequestModel, IUpdateUserDataRequestModel, IUsers } from '../../models/users';
+import { IApiResponse, IDeleteUserDataRequestModel, IFilterUsersRequestModel, IUpdateUserDataRequestModel, IUsers } from '../../models/users';
 import { CommonModule } from '@angular/common';
 import { UserAuthService } from '../../shared/user-auth-service';
 import { RouterModule } from '@angular/router';
@@ -8,8 +8,9 @@ import { AuthService } from '../../mdl-auth/auth-service';
 import { AlertService } from '../../alert/alert-service';
 import { Update } from '../update/update';
 import { openModalById } from '../../util/modal.util';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Delete } from '../delete/delete';
+import { NonNullAssert } from '@angular/compiler';
 
 @Component({
   selector: 'app-protect',
@@ -22,25 +23,23 @@ export class Protect implements OnInit {
   public users!: IUsers[];
   public isLoged: boolean = false;
   public selectUser!: IUsers;
+  public filterFormGroup!: FormGroup;
 
   constructor(private userService: UserService,
     private userAuthService: UserAuthService,
     private authService: AuthService,
-    private alertService: AlertService) {
-
+    private alertService: AlertService,
+    private formBuilder: FormBuilder) {
+    this.filterFormGroup = this.formBuilder.group({
+      filterName: [null],
+      filterEmail: [null],
+      filterImg: [false]
+    });
   }
 
   ngOnInit(): void {
     this.userAuthService.isLoggedIn().subscribe(__isLoged => this.isLoged = __isLoged);
-    this.userService.GetUsers().subscribe({
-      next: response => {
-        console.log(response);
-        this.users = response
-      },
-      error: err => {
-        console.log(err)
-      }
-    });
+    this.search();
   }
 
   Logout() {
@@ -65,14 +64,7 @@ export class Protect implements OnInit {
       next: (value: IApiResponse<any>) => {
         if (value.success) {
           this.alertService.success('Usuário atualizado com sucesso.');
-          this.userService.GetUsers().subscribe({
-            next: response => {
-              this.users = response
-            },
-            error: err => {
-              console.log(err)
-            }
-          });
+          this.search();
         } else {
           const errosObj = value.errors as Record<string, any>;
 
@@ -106,14 +98,7 @@ export class Protect implements OnInit {
       next: (value: IApiResponse<any>) => {
         if (value.success) {
           this.alertService.success('Usuário excluído com sucesso.');
-          this.userService.GetUsers().subscribe({
-            next: response => {
-              this.users = response
-            },
-            error: err => {
-              console.log(err)
-            }
-          });
+          this.search();
         } else {
           const errosObj = value.errors as Record<string, any>;
 
@@ -137,11 +122,41 @@ export class Protect implements OnInit {
   }
 
   loadImage(item: string) {
-    if(item == null || item == undefined || item == '') {
+    if (item == null || item == undefined || item == '') {
       return "assets/SemFoto.jpg";
     } else {
       return `data:image/jpeg;base64,${item}`;
     }
   }
 
+  search() {
+    this.filterFormGroup.markAllAsTouched();
+
+    const formData = this.filterFormGroup.value;
+    const command = {
+      filterName: formData.filterName,
+      filterEmail: formData.filterEmail,
+      filterImg: formData.filterImg
+    } as IFilterUsersRequestModel;
+
+    this.userService.GetUsers(command).subscribe({
+      next: response => {
+        console.log(response);
+        this.users = response
+      },
+      error: err => {
+        console.log(err)
+      }
+    });
+  }
+
+  clear() {
+     this.filterFormGroup = this.formBuilder.group({
+      filterName: [null],
+      filterEmail: [null],
+      filterImg: [false]
+    });
+
+    this.search();
+  }
 }

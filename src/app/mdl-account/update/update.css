@@ -1,0 +1,23 @@
+.modal-medio {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  max-width: 90%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  z-index: 1050;
+  border: none;
+}
+
+::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+small {
+  font-size: 0.75rem; /* ou use 12px */
+  color: #dc3545;     /* vermelho Bootstrap */
+}

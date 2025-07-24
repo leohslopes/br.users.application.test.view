@@ -7,7 +7,8 @@ export interface IUsers {
   userAge: number,
   userGender: string,
   userPassword: string,
-  userPicture: any
+  userPicture: any,
+  userOfficialNumber: string
 }
 
 export interface IApiResponse<T> {
@@ -21,7 +22,8 @@ export interface IItemUserDataRequestModel {
   userEmail: string,
   userAge: number,
   userGender: string,
-  userPassword: string
+  userPassword: string,
+  userOfficialNumber: string
 }
 
 export interface ILoginModel {
@@ -41,4 +43,10 @@ export interface IUpdateUserDataRequestModel {
 
 export interface IDeleteUserDataRequestModel{
   userID: number
+}
+
+export interface IFilterUsersRequestModel {
+  filterName: string,
+  filterEmail: string
+  filterImg: boolean
 }

@@ -1,17 +1,23 @@
-<form [formGroup]="loginFormGroup" (ngSubmit)="login()">
-  <div class="form-group">
-    <label for="exampleInputEmail1"><b>Usuário:</b></label>
-    <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp"
-      style="width: 250px;" required>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1"><b>Senha:</b></label>
-    <input type="password" class="form-control" formControlName="userPassword" style="width: 250px;" required>
-  </div>
-  <button type="submit" class="btn btn-outline-primary" (click)="login()"> <i class="bi bi-arrow-bar-right"></i>
-    Login</button> <br>
-  <button type="submit" class="btn btn-outline-success" (click)="openCreateUserModal()"> <i class="bi bi-file-plus"></i>
-    Cadastrar</button>
-</form>
+<div class="form-container">
+  <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
+    <div class="form-group">
+      <label for="exampleInputEmail1"><b>Usuário:</b></label>
+      <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp"
+        style="width: 250px;" required>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1"><b>Senha:</b></label>
+      <input type="password" class="form-control" formControlName="userPassword" style="width: 250px;" required>
+    </div>
+    <div class="button-group">
+      <button type="submit" class="btn btn-outline-primary" (click)="login()">
+        <i class="bi bi-arrow-bar-right"></i> Login
+      </button>
+      <button type="button" class="btn btn-outline-success" (click)="openCreateUserModal()">
+        <i class="bi bi-file-plus"></i> Cadastrar
+      </button>
+    </div>
+  </form>
 
-<app-registern (onSubmit)="onSubmitCreateUser($event)"></app-registern>
+  <app-registern (onSubmit)="onSubmitCreateUser($event)"></app-registern>
+</div>

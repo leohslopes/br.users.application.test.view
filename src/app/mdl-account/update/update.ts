@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../../mdl-auth/auth-service';
 import { AlertService } from '../../alert/alert-service';
 import { UserAuthService } from '../../shared/user-auth-service';
-import { closeModalById } from '../../util/modal.util';
+import { closeModalById, cpfValidator, passwordPolicyValidator } from '../../util/modal.util';
 import { CommonModule } from '@angular/common';
 
 const _modalId = 'update_user_modal';
@@ -23,6 +23,7 @@ export class Update implements OnChanges, OnInit {
   userFormGroup!: FormGroup;
   previewUrl: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
+  idRegister: string = '';
 
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -34,8 +35,9 @@ export class Update implements OnChanges, OnInit {
       userEmail: ['', [Validators.required, Validators.maxLength(50)]],
       userAge: [null, [Validators.required, Validators.min(1)]],
       userGender: ['', [Validators.required]],
-      userPassword: ['', [Validators.required, Validators.maxLength(200)]],
-      userPicture: [null]
+      userPassword: ['', [Validators.required, Validators.maxLength(8), passwordPolicyValidator]],
+      userPicture: [null],
+      userOfficialNumber: ['', [Validators.required, Validators.maxLength(14), cpfValidator]]
     });
   }
 
@@ -58,7 +60,8 @@ export class Update implements OnChanges, OnInit {
       userAge: this.users.userAge,
       userGender: this.users.userGender,
       userPassword: this.users.userPassword,
-      userPicture: this.users.userPicture
+      userPicture: this.users.userPicture,
+      userOfficialNumber: this.users.userOfficialNumber
     });
   }
 
@@ -76,6 +79,7 @@ export class Update implements OnChanges, OnInit {
     formData.append('userAge', fv.userAge.toString());
     formData.append('userGender', fv.userGender);
     formData.append('userPassword', fv.userPassword);
+    formData.append('userOfficialNumber', fv.userOfficialNumber);
 
     // campo de imagem (só anexa se for realmente um File)
     const pic = fv.userPicture;
@@ -86,7 +90,7 @@ export class Update implements OnChanges, OnInit {
     }
 
     // agora emite o FormData, não mais o JSON puro
-    this.onSubmit.emit({userId: fv.userID, data: formData});
+    this.onSubmit.emit({ userId: fv.userID, data: formData });
     this.closeModal();
 
   }
@@ -104,6 +108,14 @@ export class Update implements OnChanges, OnInit {
     // aqui sim você armazena o File no FormControl
     this.userFormGroup.patchValue({ userPicture: file });
     this.userFormGroup.get('userPicture')!.updateValueAndValidity();
+  }
+
+  formatRegister(event: any) {
+    let value = event.target.value.replace(/\D/g, '');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    this.idRegister = value;
   }
 
 }

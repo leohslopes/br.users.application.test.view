@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IApiResponse, IDeleteUserDataRequestModel, IUpdateUserDataRequestModel, IUsers } from './models/users';
+import { IApiResponse, IDeleteUserDataRequestModel, IFilterUsersRequestModel, IUpdateUserDataRequestModel, IUsers } from './models/users';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -13,24 +13,24 @@ export class UserService {
   }
   public url: string = 'http://localhost:5052/api';
 
-  GetUsers() {
-    return this.httpclient.get<IApiResponse<IUsers[]>>(`${this.url}/User/GetAll`)
-      .pipe(map(response => {
+  GetUsers(command: IFilterUsersRequestModel) {
+  const params = new HttpParams()
+    .set('FilterName', command.filterName || '')
+    .set('FilterEmail', command.filterEmail || '')
+    .set('FilterImg', String(command.filterImg ?? ''));
+
+  return this.httpclient.get<IApiResponse<IUsers[]>>(`${this.url}/User/filter-users`, { params })
+    .pipe(
+      map(response => {
         if (!response.success) {
           console.error('Erros da API:', response.errors);
         }
         return response.data;
       })
-      );
-  }
-
-  // updateUser(command: IUpdateUserDataRequestModel) {
-  //   return this.httpclient.put<IApiResponse<any>>(`${this.url}/User/${command.userID}`, command);
-  // }
+    );
+}
 
   updateUser(userID: number, formData: FormData): Observable<IApiResponse<any>> {
-    // NÃO defina manualmente o Content-Type:
-    // o browser vai gerar o multipart boundary pra você.
     return this.httpclient.put<IApiResponse<any>>(
       `${this.url}/User/${userID}`,
       formData
