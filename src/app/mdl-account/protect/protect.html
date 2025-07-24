@@ -43,6 +43,7 @@
       <th scope="col">E-mail</th>
       <th scope="col">Idade</th>
       <th scope="col">Sexo</th>
+      <th scope="col">Data Atualização</th>
       <th scope="col">Ações</th>
     </tr>
   </thead>
@@ -63,6 +64,7 @@
       <td>{{ u.userEmail }}</td>
       <td>{{ u.userAge }}</td>
       <td>{{ ChangeTextGender(u.userGender) }}</td>
+      <td>{{u.dateAlter | date:'dd/MM/yyyy HH:mm:ss' }}</td>
       <td>
         <button type="button" class="btn btn-outline-success" data-toggle="tooltip" title="Editar"
           (click)="openViewUserModal(selectUser, $event); $event.stopPropagation()">

@@ -33,7 +33,7 @@ export class Protect implements OnInit {
     this.filterFormGroup = this.formBuilder.group({
       filterName: [null],
       filterEmail: [null],
-      filterImg: [false]
+      filterImg: [null]
     });
   }
 
@@ -154,7 +154,7 @@ export class Protect implements OnInit {
      this.filterFormGroup = this.formBuilder.group({
       filterName: [null],
       filterEmail: [null],
-      filterImg: [false]
+      filterImg: [null]
     });
 
     this.search();

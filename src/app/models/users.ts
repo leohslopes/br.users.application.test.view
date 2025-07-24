@@ -8,7 +8,8 @@ export interface IUsers {
   userGender: string,
   userPassword: string,
   userPicture: any,
-  userOfficialNumber: string
+  userOfficialNumber: string,
+  dateAlter: any
 }
 
 export interface IApiResponse<T> {
