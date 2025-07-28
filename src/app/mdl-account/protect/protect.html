@@ -10,6 +10,12 @@
 <div class="p-3 mb-2 bg-dark-subtle text-dark-emphasis">
   <strong>Lista de Usuários</strong>
 </div>
+<div class="mb-3 d-flex justify-content-start align-items-center gap-3">
+  <label class="btn btn-outline-primary btn-sm m-0">
+    <i class="bi bi-upload"></i> Importar CSV
+    <input type="file" accept=".csv" (change)="onFileSelected($event)" hidden>
+  </label>
+</div>
 <form class="row g-3 mb-3" [formGroup]="filterFormGroup">
   <div class="col-md-6 col-lg-4">
     <label for="filterName" class="form-label"><b>Nome:</b></label>
@@ -57,9 +63,9 @@
         </button>
       </td>
       <td>
-        {{ u.userName }}<br>
         <img [src]="loadImage(u.userPicture)" alt="Foto do Usuário" class="img-thumbnail"
-          style="width: 100px; height: 100px;">
+          style="width: 80px; height: 80px; border-radius: 50px;">
+           {{ u.userName }}
       </td>
       <td>{{ u.userEmail }}</td>
       <td>{{ u.userAge }}</td>

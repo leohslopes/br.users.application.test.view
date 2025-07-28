@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IApiResponse, IDeleteUserDataRequestModel, IFilterUsersRequestModel, IUpdateUserDataRequestModel, IUsers } from './models/users';
+import { IApiResponse, IDeleteUserDataRequestModel, IFilterUsersRequestModel, IResultSetImportArchive, IUpdateUserDataRequestModel, IUsers } from './models/users';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -31,13 +31,14 @@ export class UserService {
 }
 
   updateUser(userID: number, formData: FormData): Observable<IApiResponse<any>> {
-    return this.httpclient.put<IApiResponse<any>>(
-      `${this.url}/User/${userID}`,
-      formData
-    );
+    return this.httpclient.put<IApiResponse<any>>(`${this.url}/User/${userID}`, formData);
   }
 
   deleteUser(command: IDeleteUserDataRequestModel) {
     return this.httpclient.delete<IApiResponse<any>>(`${this.url}/User/${command.userID}`);
+  }
+
+  import(formData: FormData) {
+    return this.httpclient.post<IApiResponse<IResultSetImportArchive>>(`${this.url}/Archive/Import`, formData);
   }
 }

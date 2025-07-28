@@ -51,3 +51,8 @@ export interface IFilterUsersRequestModel {
   filterEmail: string
   filterImg: boolean
 }
+
+export interface IResultSetImportArchive {
+  resultFileContent: any,
+  countRows: number
+}
