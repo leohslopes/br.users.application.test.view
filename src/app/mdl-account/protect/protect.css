@@ -5,7 +5,7 @@
 
 .img-thumbnail {
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 50px;
 }
 
 table.table-hover tbody tr:hover {
@@ -20,4 +20,72 @@ table.table-hover tbody tr:hover {
 .table img.img-thumbnail {
   width: 80px;  /* Reduz a largura da imagem, se quiser */
   height: 80px; /* Reduz a altura da imagem */
+}
+
+/* Estilo refinado para tabela corporativa */
+.table thead th {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  vertical-align: middle;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.selected-item {
+  background-color: #e9f7ef !important;
+  border-left: 4px solid #198754;
+}
+
+/* Responsividade extra para colunas com ações */
+@media (max-width: 768px) {
+  .table thead {
+    display: none;
+  }
+
+  .table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border: none;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #6c757d;
+  }
+}
+
+/* Estilização da coluna de ações */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem; /* Espaço entre os botões */
+  justify-content: center;
+  align-items: center;
+}
+
+.action-buttons .btn {
+  min-width: 36px;
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

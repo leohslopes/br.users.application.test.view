@@ -1,8 +1,15 @@
-<div class="toast-container" *ngIf="toasts.length">
+<div class="toast-container-custom" *ngIf="toasts.length">
   <div *ngFor="let t of toasts"
-       class="toast-item"
+       class="toast-item-custom"
        [ngClass]="t.type"
        (click)="dismiss(t.id)">
+    <i class="me-2"
+       [ngClass]="{
+         'bi bi-check-circle-fill': t.type === 'success',
+         'bi bi-exclamation-triangle-fill': t.type === 'warning',
+         'bi bi-x-circle-fill': t.type === 'error',
+         'bi bi-info-circle-fill': t.type === 'info'
+       }"></i>
     {{ t.msg }}
   </div>
 </div>

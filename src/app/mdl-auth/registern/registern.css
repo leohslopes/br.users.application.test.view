@@ -1,24 +1,37 @@
-.modal-medio {
-  margin-top: 20px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  max-width: 90%;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  z-index: 1050;
+.user-modal {
+  width: 100%;
+  max-width: 700px;
   border: none;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  background-color: #ffffff;
+  font-size: 0.875rem;
 }
 
-::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
+.user-modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
 }
 
-small {
-  font-size: 0.75rem; /* ou use 12px */
-  color: #dc3545;     /* vermelho Bootstrap */
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.user-modal .form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.user-modal input,
+.user-modal select {
+  font-size: 0.875rem;
+}
+
+.user-modal small {
+  font-size: 0.75rem;
 }

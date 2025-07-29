@@ -1,0 +1,24 @@
+.delete-modal {
+  max-width: 420px;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #fff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.delete-modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.delete-modal .modal-body p {
+  margin: 0;
+  color: #333;
+}
+
+.delete-modal .btn {
+  min-width: 100px;
+}

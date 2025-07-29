@@ -1,23 +1,30 @@
-<div class="form-container">
-  <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
-    <div class="form-group">
-      <label for="exampleInputEmail1"><b>Usuário:</b></label>
-      <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp"
-        style="width: 250px;" required>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1"><b>Senha:</b></label>
-      <input type="password" class="form-control" formControlName="userPassword" style="width: 250px;" required>
-    </div>
-    <div class="button-group">
-      <button type="submit" class="btn btn-outline-primary" (click)="login()">
-        <i class="bi bi-arrow-bar-right"></i> Login
-      </button>
-      <button type="button" class="btn btn-outline-success" (click)="openCreateUserModal()">
-        <i class="bi bi-file-plus"></i> Cadastrar
-      </button>
-    </div>
-  </form>
+<div class="login-wrapper">
+  <div class="login-box shadow rounded bg-white p-4">
+    <h4 class="text-center mb-4 text-primary">Acesso ao Sistema</h4>
 
-  <app-registern (onSubmit)="onSubmitCreateUser($event)"></app-registern>
+    <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
+      <div class="form-group mb-3">
+        <label for="exampleInputEmail1" class="form-label"><b>Usuário:</b></label>
+        <input type="email" class="form-control form-control-sm" formControlName="userEmail"
+          placeholder="Digite seu e-mail" required>
+      </div>
+
+      <div class="form-group mb-4">
+        <label for="exampleInputPassword1" class="form-label"><b>Senha:</b></label>
+        <input type="password" class="form-control form-control-sm" formControlName="userPassword"
+          placeholder="Digite sua senha" required>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-outline-primary btn-sm">
+          <i class="bi bi-arrow-bar-right"></i> Login
+        </button>
+        <button type="button" class="btn btn-outline-success btn-sm" (click)="openCreateUserModal()">
+          <i class="bi bi-file-plus"></i> Cadastrar
+        </button>
+      </div>
+    </form>
+
+    <app-registern (onSubmit)="onSubmitCreateUser($event)"></app-registern>
+  </div>
 </div>

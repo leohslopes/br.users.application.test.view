@@ -24,6 +24,8 @@ export class Protect implements OnInit {
   public isLoged: boolean = false;
   public selectUser!: IUsers;
   public filterFormGroup!: FormGroup;
+  public currentPage: number = 1;
+  public usersPerPage: number = 10;
 
   constructor(private userService: UserService,
     private userAuthService: UserAuthService,
@@ -181,7 +183,7 @@ export class Protect implements OnInit {
           window.URL.revokeObjectURL(url);
 
 
-          if(value.data.countRows > 0) {
+          if (value.data.countRows > 0) {
             this.alertService.success(`Usuário(s) ${value.data.countRows} importado(s) com sucesso.`);
           } else {
             this.alertService.warning('Existe(m) crítica(s) na planilha de retorno.');
@@ -205,7 +207,7 @@ export class Protect implements OnInit {
         }
       },
       error: (err) => {
-        this.alertService.error('Falha ao editar usuário, verifique os dados e tente novamente.');
+        this.alertService.error('Falha ao importar a planilha, verifique e tente novamente.');
       }
     });
   }
@@ -225,5 +227,14 @@ export class Protect implements OnInit {
     }
 
     return new Blob(byteArrays, { type: contentType });
+  }
+
+  get paginatedUsers() {
+    const start = (this.currentPage - 1) * this.usersPerPage;
+    return this.users.slice(start, start + this.usersPerPage);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.users.length / this.usersPerPage);
   }
 }

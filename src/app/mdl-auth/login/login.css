@@ -1,13 +1,29 @@
-.form-container {
+/* Wrapper da tela de login */
+.login-wrapper {
   height: 100vh;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;    
-  flex-direction: column;
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
 }
 
-.button-group {
-  display: flex;
-  gap: 10px; /* Espaço entre os botões */
-  margin-top: 10px;
+/* Caixa de login */
+.login-box {
+  width: 100%;
+  max-width: 350px;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+/* Campo com margin mais suave */
+.login-box .form-group label {
+  color: #495057;
+}
+
+.login-box .form-control {
+  font-size: 0.875rem;
+}
+
+.login-box button {
+  width: 48%;
 }

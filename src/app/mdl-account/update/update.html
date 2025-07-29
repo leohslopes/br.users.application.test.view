@@ -1,91 +1,87 @@
-<dialog id="update_user_modal" class="modal-medio">
+<dialog id="update_user_modal" class="modal-medio user-modal">
+  <div class="modal-header mb-3">
+    <h5 class="modal-title text-primary fw-bold">Edição de Usuário</h5>
+    <span class="badge bg-secondary" *ngIf="users">ID: {{ users.userID }}</span>
+  </div>
+
   <form [formGroup]="userFormGroup" (ngSubmit)="updateUser()">
-    <h5 class="font-weight-bold" *ngIf="users">{{users.userID}}</h5>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label"><b>CPF:</b></label>
-      <input type="text" class="form-control" formControlName="userOfficialNumber" aria-describedby="emailHelp"
-        [value]="idRegister" (input)="formatRegister($event)" maxlength="14">
-      <div *ngIf="userFormGroup.get('userOfficialNumber')?.invalid && userFormGroup.get('userOfficialNumber')?.touched">
-        <small class="text-danger small" *ngIf="userFormGroup.get('userOfficialNumber')?.errors?.['required']">CPF é
-          obrigatório.</small>
-        <small class="text-danger small"
-          *ngIf="userFormGroup.get('userOfficialNumber')?.errors?.['maxlength'] || userFormGroup.get('userOfficialNumber')?.errors?.['cpfInvalido']">CPF
-          inválido.</small>
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <label class="form-label"><b>CPF:</b></label>
+        <input type="text" class="form-control form-control-sm" formControlName="userOfficialNumber"
+          [value]="idRegister" (input)="formatRegister($event)" maxlength="14">
+        <div *ngIf="userFormGroup.get('userOfficialNumber')?.invalid && userFormGroup.get('userOfficialNumber')?.touched">
+          <small class="text-danger">CPF é obrigatório ou inválido.</small>
+        </div>
       </div>
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label"><b>Nome:</b></label>
-      <input type="text" class="form-control" formControlName="userName" aria-describedby="emailHelp" maxlength="80">
-      <div *ngIf="userFormGroup.get('userName')?.invalid && userFormGroup.get('userName')?.touched">
-        <small class="text-danger small" *ngIf="userFormGroup.get('userName')?.errors?.['required']">Nome é
-          obrigatório.</small>
-        <small class="text-danger small" *ngIf="userFormGroup.get('userName')?.errors?.['maxlength']">Nome pode ter
-          até 80 caracteres.</small>
+
+      <div class="col-md-6">
+        <label class="form-label"><b>Nome:</b></label>
+        <input type="text" class="form-control form-control-sm" formControlName="userName" maxlength="80">
+        <div *ngIf="userFormGroup.get('userName')?.invalid && userFormGroup.get('userName')?.touched">
+          <small class="text-danger">Nome é obrigatório (máx. 80 caracteres).</small>
+        </div>
       </div>
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label"><b>E-mail:</b></label>
-      <input type="email" class="form-control" formControlName="userEmail" aria-describedby="emailHelp" maxlength="50">
-      <div *ngIf="userFormGroup.get('userEmail')?.invalid && userFormGroup.get('userEmail')?.touched">
-        <small class="text-danger small" *ngIf="userFormGroup.get('userEmail')?.errors?.['required']">E-mail é
-          obrigatório.</small>
-        <small class="text-danger small" *ngIf="userFormGroup.get('userEmail')?.errors?.['maxlength']">E-mail pode ter
-          até 50 caracteres.</small>
+
+      <div class="col-md-6">
+        <label class="form-label"><b>E-mail:</b></label>
+        <input type="email" class="form-control form-control-sm" formControlName="userEmail" maxlength="50">
+        <div *ngIf="userFormGroup.get('userEmail')?.invalid && userFormGroup.get('userEmail')?.touched">
+          <small class="text-danger">E-mail obrigatório (máx. 50 caracteres).</small>
+        </div>
       </div>
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label"><b>Senha:</b></label>
-      <input type="password" class="form-control" formControlName="userPassword" aria-describedby="emailHelp"
-        maxlength="8">
-      <div *ngIf="userFormGroup.get('userPassword')?.invalid && userFormGroup.get('userPassword')?.touched">
-        <small class="text-danger small" *ngIf="userFormGroup.get('userPassword')?.errors?.['required']">Senha é
-          obrigatória.</small>
-        <small class="text-danger small" *ngIf="userFormGroup.get('userPassword')?.errors?.['maxlength']">Senha pode ter
-          até 8 caracteres.</small>
-        <small class="text-danger small" *ngIf="userFormGroup.get('userPassword')?.errors?.['passwordPolicy']">
-          Senha deverá conter:
-          <ul>
+
+      <div class="col-md-6">
+        <label class="form-label"><b>Senha:</b></label>
+        <input type="password" class="form-control form-control-sm" formControlName="userPassword" maxlength="8">
+        <div *ngIf="userFormGroup.get('userPassword')?.invalid && userFormGroup.get('userPassword')?.touched">
+          <small class="text-danger">Senha inválida.</small>
+          <ul class="text-danger small mb-0 ps-3" *ngIf="userFormGroup.get('userPassword')?.errors?.['passwordPolicy']">
             <li>Uma letra maiúscula</li>
             <li>Uma letra minúscula</li>
             <li>Um número</li>
             <li>Um caractere especial</li>
           </ul>
-        </small>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"><b>Idade:</b></label>
+        <input type="number" class="form-control form-control-sm" formControlName="userAge" min="1" step="1">
+        <div *ngIf="userFormGroup.get('userAge')?.invalid && userFormGroup.get('userAge')?.touched">
+          <small class="text-danger">Idade mínima é 1.</small>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"><b>Sexo:</b></label>
+        <select class="form-select form-select-sm" formControlName="userGender">
+          <option value="" disabled selected>Selecione...</option>
+          <option value="F">Feminino</option>
+          <option value="M">Masculino</option>
+        </select>
+        <div *ngIf="userFormGroup.get('userGender')?.invalid && userFormGroup.get('userGender')?.touched">
+          <small class="text-danger">Sexo é obrigatório.</small>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"><b>Foto:</b></label><br>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+        <div *ngIf="userFormGroup.get('userPicture')?.invalid && userFormGroup.get('userPicture')?.touched">
+          <small class="text-danger">Foto é obrigatória.</small>
+        </div>
       </div>
     </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label"><b>Idade:</b></label>
-      <input type="number" class="form-control" formControlName="userAge" aria-describedby="emailHelp" step="1" min="1">
-      <div *ngIf="userFormGroup.get('userAge')?.invalid && userFormGroup.get('userAge')?.touched">
-        <small class="text-danger small" *ngIf="userFormGroup.get('userAge')?.errors?.['required']">Idade é
-          obrigatória.</small>
-        <small class="text-danger small" *ngIf="userFormGroup.get('userAge')?.errors?.['min']">A idade deve ser maior que
-          1.</small>
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label"><b>Sexo:</b></label>
-      <select class="form-control" aria-describedby="emailHelp" formControlName="userGender">
-        <option value=" " selected>Selecione...</option>
-        <option value="F">Feminino</option>
-        <option value="M">Masculino</option>
-      </select>
-      <div class="text-danger small" *ngIf="userFormGroup.get('userGender')?.invalid && userFormGroup.get('userGender')?.touched"
-        class="text-red-500 text-sm mt-0.5">
-        <small class="text-danger small" *ngIf="userFormGroup.get('userGender')?.errors?.['required']">Sexo é obrigatório.</small>
-      </div>
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label"><b>Foto:</b></label>
-      <br>
-      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
-      <div *ngIf="userFormGroup.get('userPicture')?.invalid && userFormGroup.get('userPicture')?.touched">
-        <small class="text-danger small" *ngIf="userFormGroup.get('userPicture')?.errors?.['required']">Foto é
-          obrigatória.</small>
-      </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button type="button" class="btn btn-outline-danger btn-sm" (click)="closeModal()">
+        <i class="bi bi-x-lg"></i> Cancelar
+      </button>
+      <button type="submit" class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-save"></i> Salvar
+      </button>
     </div>
   </form>
-  <br>
-  <button type="button" class="btn btn-outline-primary" (click)="updateUser()">Salvar</button>
-  <button type="button" class="btn btn-outline-danger" (click)="closeModal()">Cancelar</button>
 </dialog>
