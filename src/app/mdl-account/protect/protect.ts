@@ -35,7 +35,8 @@ export class Protect implements OnInit {
     this.filterFormGroup = this.formBuilder.group({
       filterName: [null],
       filterEmail: [null],
-      filterImg: [null]
+      filterImg: [null],
+      filterRecentUsers: [null]
     });
   }
 
@@ -138,7 +139,8 @@ export class Protect implements OnInit {
     const command = {
       filterName: formData.filterName,
       filterEmail: formData.filterEmail,
-      filterImg: formData.filterImg
+      filterImg: formData.filterImg,
+      filterRecentUsers: formData.filterRecentUsers
     } as IFilterUsersRequestModel;
 
     this.userService.GetUsers(command).subscribe({
@@ -156,7 +158,8 @@ export class Protect implements OnInit {
     this.filterFormGroup = this.formBuilder.group({
       filterName: [null],
       filterEmail: [null],
-      filterImg: [null]
+      filterImg: [null],
+      filterRecentUsers: [null]
     });
 
     this.search();
@@ -236,5 +239,50 @@ export class Protect implements OnInit {
 
   get totalPages(): number {
     return Math.ceil(this.users.length / this.usersPerPage);
+  }
+
+  download() {
+    this.userService.download().subscribe({
+      next: (value: IApiResponse<string>) => {
+        if (value.success) {
+          debugger;
+          const base64 = value.data;
+          const blob = this.base64ToBlob(base64, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+          const a = document.createElement('a');
+          const url = window.URL.createObjectURL(blob);
+          a.href = url;
+          a.download = 'relatorio-log-fila.xlsx';
+          a.click();
+          window.URL.revokeObjectURL(url);
+
+          this.deleteFile();
+          this.alertService.success("Relatório baixado com sucesso.");
+        } else {
+          const errosObj = value.errors as Record<string, any>;
+
+          // Extrai apenas os valores (as mensagens) e gera um array de strings
+          const listaDeErros: string[] = Object.values(errosObj).map(err => {
+            // Se for um array ou objeto mais complexo, adapte aqui
+            if (Array.isArray(err)) return err.join(', ');
+            if (typeof err === 'string') return err;
+            return JSON.stringify(err);
+          });
+
+          // Agrupa tudo numa única string
+          const mensagemUnica = listaDeErros.join('; ');
+          this.alertService.error(mensagemUnica);
+        }
+      },
+      error: (err) => {
+        this.alertService.error('Falha ao baixar o relatório de log, verifique e tente novamente.');
+      }
+    });
+  }
+
+  deleteFile() {
+    this.userService.deleteFile().subscribe({
+      next: () => console.log('Arquivo deletado com sucesso!'),
+      error: () => console.log('Erro ao deletar o arquivo.')
+    });
   }
 }

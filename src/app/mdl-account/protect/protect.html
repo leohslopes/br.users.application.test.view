@@ -40,7 +40,7 @@
             <input type="file" accept=".csv" (change)="onFileSelected($event)" hidden>
           </label>
 
-          <button type="button" class="btn btn-outline-secondary btn-sm">
+          <button type="button" class="btn btn-outline-secondary btn-sm" (click)="download()">
             <i class="bi bi-download"></i> Exportar Logs
           </button>
         </div>
@@ -64,7 +64,14 @@
               <div class="col-md-6 col-lg-4 d-flex align-items-center pt-4">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" id="noImage" formControlName="filterImg">
-                  <label class="form-check-label" for="noImage">Somente usuários sem imagem</label>
+                  <label class="form-check-label" for="noImage">Usuários sem imagem</label>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4 d-flex align-items-center pt-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="filterRecentUsers"
+                    formControlName="filterRecentUsers">
+                  <label class="form-check-label" for="filterRecentUsers">Últimos usuários adicionados</label>
                 </div>
               </div>
 
@@ -99,7 +106,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let u of paginatedUsers" (click)="SelectedItem(u)" [ngClass]="{ 'selected-item': u === selectUser }">
+                <tr *ngFor="let u of paginatedUsers" (click)="SelectedItem(u)"
+                  [ngClass]="{ 'selected-item': u === selectUser }">
                   <td data-label="Código">
                     {{ u.userID }}
                     <button type="button" class="btn btn-sm btn-secondary" title="CPF: {{ u.userOfficialNumber }}">

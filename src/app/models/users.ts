@@ -48,8 +48,9 @@ export interface IDeleteUserDataRequestModel{
 
 export interface IFilterUsersRequestModel {
   filterName: string,
-  filterEmail: string
-  filterImg: boolean
+  filterEmail: string,
+  filterImg: boolean,
+  filterRecentUsers: boolean
 }
 
 export interface IResultSetImportArchive {

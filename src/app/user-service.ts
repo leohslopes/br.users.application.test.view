@@ -17,7 +17,8 @@ export class UserService {
   const params = new HttpParams()
     .set('FilterName', command.filterName || '')
     .set('FilterEmail', command.filterEmail || '')
-    .set('FilterImg', String(command.filterImg ?? ''));
+    .set('FilterImg', String(command.filterImg ?? ''))
+    .set('FilterRecentUsers', String(command.filterRecentUsers ?? ''));
 
   return this.httpclient.get<IApiResponse<IUsers[]>>(`${this.url}/User/filter-users`, { params })
     .pipe(
@@ -40,5 +41,13 @@ export class UserService {
 
   import(formData: FormData) {
     return this.httpclient.post<IApiResponse<IResultSetImportArchive>>(`${this.url}/Archive/Import`, formData);
+  }
+
+  download() {
+    return this.httpclient.get<any>(`${this.url}/Archive/Download`);
+  }
+
+  deleteFile() {
+    return this.httpclient.delete<any>(`${this.url}/Archive/Delete`);
   }
 }
