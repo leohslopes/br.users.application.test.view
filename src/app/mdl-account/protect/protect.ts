@@ -36,7 +36,8 @@ export class Protect implements OnInit {
       filterName: [null],
       filterEmail: [null],
       filterImg: [null],
-      filterRecentUsers: [null]
+      filterRecentUsers: [null],
+      filterGender: ['']
     });
   }
 
@@ -140,7 +141,8 @@ export class Protect implements OnInit {
       filterName: formData.filterName,
       filterEmail: formData.filterEmail,
       filterImg: formData.filterImg,
-      filterRecentUsers: formData.filterRecentUsers
+      filterRecentUsers: formData.filterRecentUsers,
+      filterGender: formData.filterGender
     } as IFilterUsersRequestModel;
 
     this.userService.GetUsers(command).subscribe({
@@ -159,7 +161,8 @@ export class Protect implements OnInit {
       filterName: [null],
       filterEmail: [null],
       filterImg: [null],
-      filterRecentUsers: [null]
+      filterRecentUsers: [null],
+      filterGender: ['']
     });
 
     this.search();

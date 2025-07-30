@@ -50,7 +50,8 @@ export interface IFilterUsersRequestModel {
   filterName: string,
   filterEmail: string,
   filterImg: boolean,
-  filterRecentUsers: boolean
+  filterRecentUsers: boolean,
+  filterGender: string
 }
 
 export interface IResultSetImportArchive {

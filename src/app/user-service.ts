@@ -18,7 +18,8 @@ export class UserService {
     .set('FilterName', command.filterName || '')
     .set('FilterEmail', command.filterEmail || '')
     .set('FilterImg', String(command.filterImg ?? ''))
-    .set('FilterRecentUsers', String(command.filterRecentUsers ?? ''));
+    .set('FilterRecentUsers', String(command.filterRecentUsers ?? ''))
+    .set('FilterGender', command.filterGender || '');
 
   return this.httpclient.get<IApiResponse<IUsers[]>>(`${this.url}/User/filter-users`, { params })
     .pipe(

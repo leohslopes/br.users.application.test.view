@@ -61,6 +61,14 @@
                 <input type="text" id="filterEmail" class="form-control form-control-sm" formControlName="filterEmail"
                   placeholder="Buscar por e-mail">
               </div>
+              <div class="col-md-6 col-lg-4">
+                <label for="filterGender" class="form-label"><b>Sexo:</b></label>
+                <select id="filterGender" class="form-select form-select-sm" formControlName="filterGender">
+                  <option value="" disabled selected>Todos</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
+              </div>
               <div class="col-md-6 col-lg-4 d-flex align-items-center pt-4">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" id="noImage" formControlName="filterImg">
