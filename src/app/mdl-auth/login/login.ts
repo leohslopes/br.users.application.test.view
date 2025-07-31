@@ -35,7 +35,8 @@ export class Login {
       next: (value) => {
         if (value) {
           this.alertService.success('Usuário logado com sucesso.');
-          this.userAuthService.setToken(value.data);
+          this.userAuthService.setToken(value.data.token);
+          this.userAuthService.setUser(value.data.user);
           this.router.navigateByUrl('account/protect');
         }
       },

@@ -6,6 +6,9 @@
         <img src="assets/LogoSistema.png" alt="UserControl Logo" style="height: 50px;">
       </a>
       <div class="d-flex align-items-center">
+        <span class="text-white me-3" *ngIf="isLoged">
+          Olá, <strong>{{ userCurrent.userName }}</strong>
+        </span>
         <a class="nav-link text-white" *ngIf="isLoged" (click)="Logout()">Logout</a>
       </div>
     </div>

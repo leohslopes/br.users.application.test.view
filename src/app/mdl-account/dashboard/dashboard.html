@@ -6,6 +6,9 @@
         <img src="assets/LogoSistema.png" alt="UserControl Logo" style="height: 50px;">
       </a>
       <div class="d-flex align-items-center">
+        <span class="text-white me-3" *ngIf="isLoged">
+          Olá, <strong>{{ userCurrent.userName }}</strong>
+        </span>
         <a class="nav-link text-white" *ngIf="isLoged" (click)="Logout()">Logout</a>
       </div>
     </div>
@@ -51,6 +54,17 @@
               <h5 class="card-title text-center">Frequência de Idades</h5>
               <div class="chart-wrapper">
                 <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="'line'">
+                </canvas>
+              </div>
+            </div>
+          </div>
+          <!-- Gráfico de Dispersão -->
+          <div class="card shadow-sm rounded-4 flex-grow-1 chart-card">
+            <div class="card-body">
+              <h5 class="card-title text-center">Usuários com e sem Foto</h5>
+              <div class="chart-wrapper">
+                <canvas baseChart [datasets]="scatterChartData" [options]="scatterChartOptions"
+                  [type]="scatterChartType">
                 </canvas>
               </div>
             </div>

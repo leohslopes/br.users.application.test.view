@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IApiResponse, IDeleteUserDataRequestModel, IFilterUsersRequestModel, IReportUserAllAges, IReportUserGender, IReportUsersDashboard, IResultSetImportArchive, IUpdateUserDataRequestModel, IUsers } from './models/users';
+import { IApiResponse, IDeleteUserDataRequestModel, IFilterUsersRequestModel, IReportUserAllAges, IReportUserGender, IReportUserPicture, IReportUsersDashboard, IResultSetImportArchive, IUpdateUserDataRequestModel, IUsers } from './models/users';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -78,6 +78,18 @@ export class UserService {
 
   getDashboardAge() {
     return this.httpclient.get<IApiResponse<IReportUserAllAges[]>>(`${this.url}/Dashboard/GetDashboardAge`)
+      .pipe(
+        map(response => {
+          if (!response.success) {
+            console.error('Erros da API:', response.errors);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  getDashboardPicture() {
+    return this.httpclient.get<IApiResponse<IReportUserPicture[]>>(`${this.url}/Dashboard/GetDashboardPicture`)
       .pipe(
         map(response => {
           if (!response.success) {

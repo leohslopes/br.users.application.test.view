@@ -26,6 +26,7 @@ export class Protect implements OnInit {
   public filterFormGroup!: FormGroup;
   public currentPage: number = 1;
   public usersPerPage: number = 10;
+  public userCurrent?: any;
 
   constructor(private userService: UserService,
     private userAuthService: UserAuthService,
@@ -43,6 +44,7 @@ export class Protect implements OnInit {
 
   ngOnInit(): void {
     this.userAuthService.isLoggedIn().subscribe(__isLoged => this.isLoged = __isLoged);
+    this.userCurrent = this.userAuthService.getUser();
     this.search();
   }
 

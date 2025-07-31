@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
-import { IReportUserAllAges, IReportUserGender } from '../../models/users';
+import { IReportUserAllAges, IReportUserGender, IReportUserPicture } from '../../models/users';
 
 @Component({
   selector: 'app-dashboard',
@@ -111,6 +111,46 @@ export class Dashboard implements OnInit {
     }
   };
 
+  //Grafico de dispersão
+  public scatterChartOptions: ChartOptions = {
+    responsive: true,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function(context: any) {
+            return `${context.raw.label}: ${context.raw.y}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Categoria'
+        },
+        ticks: {
+          callback: function(value: any, index: number) {
+            if (index === 0) return 'Com Foto';
+            if (index === 1) return 'Sem Foto';
+            return value;
+          }
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Qtd. Usuários'
+        },
+        beginAtZero: true
+      }
+    }
+  };
+
+  public scatterChartType: ChartType = 'scatter';
+  public scatterChartData: any[] = [];
+  public userCurrent?: any;
+
   constructor(private userService: UserService,
     private userAuthService: UserAuthService,
     private authService: AuthService,
@@ -120,6 +160,7 @@ export class Dashboard implements OnInit {
 
   ngOnInit(): void {
     this.userAuthService.isLoggedIn().subscribe(__isLoged => this.isLoged = __isLoged);
+    this.userCurrent = this.userAuthService.getUser();
 
     //Gráfico de total de usuário por mês
     this.getDashboard();
@@ -129,6 +170,9 @@ export class Dashboard implements OnInit {
 
     //Gráfico da idade que mais se repete
     this.getDashboardAge();
+
+    //Gráfico da imagens
+    this.getDashboardPicture();
   }
 
   Logout() {
@@ -167,11 +211,27 @@ export class Dashboard implements OnInit {
 
   private getDashboardAge() {
     this.userService.getDashboardAge().subscribe((data: IReportUserAllAges[]) => {
-      debugger;
       const sorted = data.sort((a, b) => a.allAge - b.allAge);
 
       this.lineChartData.labels = sorted.map(item => item.allAge.toString());
       this.lineChartData.datasets[0].data = sorted.map(item => item.countAges);
+    });
+  }
+
+  private getDashboardPicture() {
+    this.userService.getDashboardPicture().subscribe((data: IReportUserPicture[]) => {
+      debugger;
+      this.scatterChartData = [{
+        data: data.map((item, index) => ({
+          x: index + 1,
+          y: item.countPictures,
+          label: item.resultPicture
+        })),
+        label: 'Usuários com/sem Foto',
+        pointBackgroundColor: ['#007bff', '#dc3545'],
+        pointRadius: 10,
+        showLine: false
+      }];
     });
   }
 }

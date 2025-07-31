@@ -13,9 +13,9 @@ export interface IUsers {
 }
 
 export interface IApiResponse<T> {
-  data: T;
-  success: boolean;
-  errors: Record<string, any>;
+  data: T,
+  success: boolean,
+  errors: Record<string, any>
 }
 
 export interface IItemUserDataRequestModel {
@@ -71,6 +71,16 @@ export interface IReportUserGender {
 }
 
 export interface IReportUserAllAges {
-  allAge: number;
-  countAges: number;
+  allAge: number,
+  countAges: number
+}
+
+export interface IReportUserPicture {
+  resultPicture: string,
+  countPictures: number
+}
+
+export interface IResponseUserSession {
+  token: string,
+  user: IUsers
 }
