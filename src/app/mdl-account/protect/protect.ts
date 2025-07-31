@@ -20,7 +20,7 @@ import { NonNullAssert } from '@angular/compiler';
 })
 export class Protect implements OnInit {
 
-  public users!: IUsers[];
+  public users?: IUsers[];
   public isLoged: boolean = false;
   public selectUser!: IUsers;
   public filterFormGroup!: FormGroup;
@@ -236,11 +236,18 @@ export class Protect implements OnInit {
   }
 
   get paginatedUsers() {
+    if (!this.users || !Array.isArray(this.users)) {
+    return []; // ou [] para evitar quebrar o template
+  }
     const start = (this.currentPage - 1) * this.usersPerPage;
     return this.users.slice(start, start + this.usersPerPage);
   }
 
   get totalPages(): number {
+    if (!Array.isArray(this.users) || this.users.length === 0) {
+    return 1; // ou 0, dependendo do seu caso de uso
+  }
+
     return Math.ceil(this.users.length / this.usersPerPage);
   }
 

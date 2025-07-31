@@ -1,38 +1,30 @@
-<!-- Layout base para sistema corporativo -->
-<div class="container-fluid">
+<div class="container-fluid p-0">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top mb-4">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Controle de Usuários</a>
+      <a class="navbar-brand d-flex align-items-center">
+        <img src="assets/LogoSistema.png" alt="UserControl Logo" style="height: 50px;">
+      </a>
       <div class="d-flex align-items-center">
-        <div class="text-white me-3" *ngIf="isLoged">
-          Olá
-        </div>
-        <a class="nav-link text-white" href="#" *ngIf="isLoged" (click)="Logout()">Logout</a>
+        <a class="nav-link text-white" *ngIf="isLoged" (click)="Logout()">Logout</a>
       </div>
     </div>
   </nav>
 
-  <div class="row">
-    <!-- Sidebar opcional -->
+  <div class="row no-gutters">
+    <!-- Sidebar -->
     <aside class="col-md-3 col-lg-2 bg-light border-end min-vh-100 p-3 d-none d-md-block">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="#">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Usuários</a>
+          <a class="nav-link active" routerLink="/account/dashboard" routerLinkActive="active">Dashboard</a>
         </li>
       </ul>
     </aside>
 
     <!-- Conteúdo principal -->
-    <main class="col-md-9 col-lg-10 px-4">
-      <div class="py-4">
-        <div class="bg-dark-subtle p-3 rounded mb-3">
-          <h5 class="text-dark-emphasis mb-0"><strong>Lista de Usuários</strong></h5>
-        </div>
-
+    <main class="col px-4 py-4">
+      <div class="dashboard-container">
+        <h2 class="title mb-4">Lista de Usuários</h2>
         <!-- Botões superiores -->
         <div class="mb-3 d-flex justify-content-start align-items-center gap-3">
           <label class="btn btn-outline-primary btn-sm m-0">
@@ -148,8 +140,9 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="7" class="text-end fw-semibold bg-light text-secondary small px-3 py-2">
-                    Total de usuários: {{ users.length }}
+                  <td *ngIf="users?.length !== undefined" colspan="7"
+                    class="text-end fw-semibold bg-light text-secondary small px-3 py-2">
+                    Total de usuários: {{ users?.length }}
                   </td>
                 </tr>
               </tfoot>

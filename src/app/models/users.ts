@@ -58,3 +58,19 @@ export interface IResultSetImportArchive {
   resultFileContent: any,
   countRows: number
 }
+
+export interface IReportUsersDashboard {
+  years: string,
+  monthName: string,
+  countUsers: number
+}
+
+export interface IReportUserGender {
+  genderName: string,
+  countGender: number
+}
+
+export interface IReportUserAllAges {
+  allAge: number;
+  countAges: number;
+}

@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
    // provideBrowserGlobalErrorListeners(),
    // provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(
+    provideHttpClient(withFetch(),
       withInterceptorsFromDi(),  // pega outros interceptors do DI
       withInterceptors([authInterceptor]) // nosso interceptor que adiciona o Bearer
     )

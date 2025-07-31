@@ -1,3 +1,42 @@
+.dashboard-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #0d47a1;
+  text-align: center;
+}
+
+.chart-wrapper {
+  position: relative;
+  min-height: 400px;
+}
+
+.navbar {
+  z-index: 1030;
+}
+
+aside {
+  background-color: #f8f9fa;
+}
+
+aside .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+aside .nav-link.active,
+aside .nav-link:hover {
+  color: #0d6efd;
+  background-color: #e9ecef;
+  border-radius: 8px;
+}
+
 .selected-item {
   background-color: #0000FF !important;
   transition: background-color 0.3s ease;
