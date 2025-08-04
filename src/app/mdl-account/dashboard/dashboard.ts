@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../user-service';
 import { UserAuthService } from '../../shared/user-auth-service';
 import { AuthService } from '../../mdl-auth/auth-service';
@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
 import { IReportUserAllAges, IReportUserGender, IReportUserPicture } from '../../models/users';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +17,7 @@ import { IReportUserAllAges, IReportUserGender, IReportUserPicture } from '../..
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard implements OnInit {
+export class Dashboard implements OnInit, OnDestroy {
   public isLoged: boolean = false;
   //Gráfico de barras
   public barChartType: ChartType = 'bar';
@@ -117,7 +118,7 @@ export class Dashboard implements OnInit {
     plugins: {
       tooltip: {
         callbacks: {
-          label: function(context: any) {
+          label: function (context: any) {
             return `${context.raw.label}: ${context.raw.y}`;
           }
         }
@@ -130,7 +131,7 @@ export class Dashboard implements OnInit {
           text: 'Categoria'
         },
         ticks: {
-          callback: function(value: any, index: number) {
+          callback: function (value: any, index: number) {
             if (index === 0) return 'Com Foto';
             if (index === 1) return 'Sem Foto';
             return value;
@@ -151,11 +152,26 @@ export class Dashboard implements OnInit {
   public scatterChartData: any[] = [];
   public userCurrent?: any;
 
+  public loginTime: Date = new Date();
+  public sessionTime: string = '';
+  public sessionModal?: bootstrap.Modal;
+  public countdown: number = 300;
+  public countdownDisplay: string = '';
+  public countdownInterval: any;
+  public firstCheckTimeout: any;
+  public recurringInterval: any;
+
   constructor(private userService: UserService,
     private userAuthService: UserAuthService,
     private authService: AuthService,
     private alertService: AlertService) {
 
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.firstCheckTimeout);
+    clearInterval(this.recurringInterval);
+    clearInterval(this.countdownInterval);
   }
 
   ngOnInit(): void {
@@ -173,9 +189,21 @@ export class Dashboard implements OnInit {
 
     //Gráfico da imagens
     this.getDashboardPicture();
+
+    this.firstCheckTimeout = setTimeout(() => {
+      this.showModalSession();
+
+      this.recurringInterval = setInterval(() => {
+        this.showModalSession();
+      }, 300000);
+    }, 1800000);
   }
 
   Logout() {
+    clearTimeout(this.firstCheckTimeout);
+    clearInterval(this.recurringInterval);
+    clearInterval(this.countdownInterval);
+    this.sessionModal?.hide();
     this.userAuthService.clearToken();
   }
 
@@ -220,7 +248,6 @@ export class Dashboard implements OnInit {
 
   private getDashboardPicture() {
     this.userService.getDashboardPicture().subscribe((data: IReportUserPicture[]) => {
-      debugger;
       this.scatterChartData = [{
         data: data.map((item, index) => ({
           x: index + 1,
@@ -233,5 +260,59 @@ export class Dashboard implements OnInit {
         showLine: false
       }];
     });
+  }
+
+  private calculateTimeSession() {
+    const currentDate = new Date();
+    const diffMs = currentDate.getDate() - this.loginTime.getDate();
+    const minutes = Math.floor(diffMs / 60000);
+    const seconds = Math.floor((diffMs % 60000) / 1000);
+
+    this.sessionTime = `${minutes} minutos e ${seconds} segundos`;
+  }
+
+  private showModalSession() {
+    this.calculateTimeSession();
+    this.resetCountdown();
+
+    const modalElement = document.getElementById('sessionTimeModal');
+    if (modalElement) {
+      this.sessionModal = new bootstrap.Modal(modalElement);
+      this.sessionModal.show();
+    }
+  }
+
+  private resetCountdown() {
+    this.countdown = 300;
+    this.updateCountdownDisplay();
+
+    // Limpa contadores anteriores
+    clearInterval(this.countdownInterval);
+
+    this.countdownInterval = setInterval(() => {
+      this.countdown--;
+      this.updateCountdownDisplay();
+
+      if (this.countdown <= 0) {
+        clearInterval(this.countdownInterval);
+        this.Logout(); // Auto logout se tempo esgotar
+      }
+    }, 1000);
+  }
+
+  private updateCountdownDisplay() {
+    const min = Math.floor(this.countdown / 60);
+    const sec = this.countdown % 60;
+    this.countdownDisplay = `${this.pad(min)}:${this.pad(sec)}`;
+  }
+
+  private pad(n: number): string {
+    return n < 10 ? '0' + n : n.toString();
+  }
+
+  continueSession() {
+    this.loginTime = new Date();
+    clearInterval(this.countdownInterval);
+    this.sessionModal?.hide();
   }
 }

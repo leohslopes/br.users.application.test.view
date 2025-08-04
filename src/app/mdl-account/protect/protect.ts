@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../user-service';
 import { IApiResponse, IDeleteUserDataRequestModel, IFilterUsersRequestModel, IResultSetImportArchive, IUpdateUserDataRequestModel, IUsers } from '../../models/users';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,7 @@ import { openModalById } from '../../util/modal.util';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Delete } from '../delete/delete';
 import { NonNullAssert } from '@angular/compiler';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-protect',
@@ -18,7 +19,7 @@ import { NonNullAssert } from '@angular/compiler';
   templateUrl: './protect.html',
   styleUrl: './protect.css'
 })
-export class Protect implements OnInit {
+export class Protect implements OnInit, OnDestroy {
 
   public users?: IUsers[];
   public isLoged: boolean = false;
@@ -27,6 +28,14 @@ export class Protect implements OnInit {
   public currentPage: number = 1;
   public usersPerPage: number = 10;
   public userCurrent?: any;
+  public loginTime: Date = new Date();
+  public sessionTime: string = '';
+  public sessionModal?: bootstrap.Modal;
+  public countdown: number = 300; 
+  public countdownDisplay: string = '';
+  public countdownInterval: any;
+  public firstCheckTimeout: any;
+  public recurringInterval: any;
 
   constructor(private userService: UserService,
     private userAuthService: UserAuthService,
@@ -41,14 +50,32 @@ export class Protect implements OnInit {
       filterGender: ['']
     });
   }
+  
+  ngOnDestroy(): void {
+    clearTimeout(this.firstCheckTimeout);
+    clearInterval(this.recurringInterval);
+    clearInterval(this.countdownInterval);
+  }
 
   ngOnInit(): void {
     this.userAuthService.isLoggedIn().subscribe(__isLoged => this.isLoged = __isLoged);
     this.userCurrent = this.userAuthService.getUser();
     this.search();
+
+    this.firstCheckTimeout = setTimeout(() => {
+      this.showModalSession();
+
+      this.recurringInterval = setInterval(() => {
+        this.showModalSession();
+      }, 300000);
+    }, 1800000);
   }
 
   Logout() {
+    clearTimeout(this.firstCheckTimeout);
+    clearInterval(this.recurringInterval);
+    clearInterval(this.countdownInterval);
+    this.sessionModal?.hide();
     this.userAuthService.clearToken();
   }
 
@@ -257,7 +284,6 @@ export class Protect implements OnInit {
     this.userService.download().subscribe({
       next: (value: IApiResponse<string>) => {
         if (value.success) {
-          debugger;
           const base64 = value.data;
           const blob = this.base64ToBlob(base64, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           const a = document.createElement('a');
@@ -297,4 +323,60 @@ export class Protect implements OnInit {
       error: () => console.log('Erro ao deletar o arquivo.')
     });
   }
+
+  calculateTimeSession() {
+    const currentDate = new Date();
+    const diffMs = currentDate.getDate() - this.loginTime.getDate();
+    const minutes = Math.floor(diffMs/60000);
+    const seconds = Math.floor((diffMs % 60000) / 1000);
+
+    this.sessionTime =  `${minutes} minutos e ${seconds} segundos`;
+  }
+
+  showModalSession(){
+    this.calculateTimeSession();
+    this.resetCountdown();
+
+    const modalElement = document.getElementById('sessionTimeModal');
+    if (modalElement) {
+      this.sessionModal = new bootstrap.Modal(modalElement);
+      this.sessionModal.show();
+    }
+  }
+
+  resetCountdown() {
+    this.countdown = 300;
+    this.updateCountdownDisplay();
+
+    // Limpa contadores anteriores
+    clearInterval(this.countdownInterval);
+
+    this.countdownInterval = setInterval(() => {
+      this.countdown--;
+      this.updateCountdownDisplay();
+
+      if (this.countdown <= 0) {
+        clearInterval(this.countdownInterval);
+        this.Logout(); // Auto logout se tempo esgotar
+      }
+    }, 1000);
+  }
+
+  updateCountdownDisplay() {
+    const min = Math.floor(this.countdown / 60);
+    const sec = this.countdown % 60;
+    this.countdownDisplay = `${this.pad(min)}:${this.pad(sec)}`;
+  }
+
+  pad(n: number): string {
+    return n < 10 ? '0' + n : n.toString();
+  }
+ 
+  continueSession() {
+    this.loginTime = new Date();
+    clearInterval(this.countdownInterval);
+    this.sessionModal?.hide();
+  }
+
+
 }

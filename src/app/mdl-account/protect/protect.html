@@ -178,6 +178,38 @@
         <!-- Modais -->
         <app-update (onSubmit)="onSubmitUpdateUser($event)" [users]="selectUser"></app-update>
         <app-delete (onSubmit)="onSubmiDeleteUser($event)" [users]="selectUser"></app-delete>
+
+        <!-- Modal de Tempo de Sessão -->
+        <div class="modal fade" id="sessionTimeModal" tabindex="-1" aria-labelledby="sessionTimeModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg rounded-4">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="sessionTimeModalLabel">
+                  <i class="bi bi-clock-history me-2"></i> Tempo de Sessão
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                  aria-label="Fechar"></button>
+              </div>
+              <div class="modal-body text-center">
+                <i class="bi bi-clock-history text-primary display-5 mb-3 d-block"></i>
+                <div>
+                  Você está logado há <strong>{{ sessionTime }}</strong>.
+                </div>
+                <p class="mt-2 text-muted">
+                  Tempo restante para continuar logado:
+                  <strong class="text-danger fs-5">{{ countdownDisplay }}</strong>
+                </p>
+                <p class="text-muted small">Deseja continuar logado ou encerrar a sessão?</p>
+              </div>
+              <div class="modal-footer d-flex justify-content-center gap-3">
+                <button type="button" class="btn btn-outline-danger btn-sm" (click)="Logout()"> <i
+                    class="bi bi-check-circle-fill"></i> Sair </button>
+                <button type="button" class="btn btn-outline-success btn-sm" (click)="continueSession()"> <i class="bi bi-file-x-fill"></i>Continuar</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
